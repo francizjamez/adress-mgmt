@@ -17,7 +17,13 @@ const signUpUser = async (req, res) => {
     const mongoRes = await newUser.save();
     res.status(201).send(mongoRes);
   } catch (err) {
-    res.status(403).send(err);
+    switch (err.code) {
+      case 11000:
+        res.status(403).send({ err: `email already used` });
+        break;
+      default:
+        res.status(403).send(err);
+    }
   }
 };
 
@@ -44,6 +50,7 @@ const loginUser = async (req, res) => {
 
   const newRefreshToken = new refreshTokenModel({
     refresh_token: refreshToken,
+    user: foundUser._id,
   });
 
   await newRefreshToken.save();
@@ -53,4 +60,10 @@ const loginUser = async (req, res) => {
     .send({ access_token: accessToken, refresh_token: refreshToken });
 };
 
-module.exports = { signUpUser, loginUser };
+const logoutUser = async (req, res) => {
+  const deleteRes = await refreshTokenModel.deleteMany({ user: req._id });
+  console.log(deleteRes);
+  res.sendStatus(200);
+};
+
+module.exports = { signUpUser, loginUser, logoutUser };

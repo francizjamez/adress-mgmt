@@ -5,7 +5,7 @@ const addressSchema = new mongoose.Schema({
   pincode: { type: Number, required: true },
   state: { type: String, required: true },
   label: { type: String, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 
-module.exports = addressModel = new mongoose.model("address", userSchema);
+module.exports = addressModel = new mongoose.model("address", addressSchema);

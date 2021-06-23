@@ -1,7 +1,6 @@
 const addressModel = require("../models/address.model");
 
 const getAllAdresses = async (req, res) => {
-  console.log(req.query);
   const addresses = await addressModel.find({ user: req._id, ...req.query });
   res.status(200).send(addresses);
 };
@@ -17,8 +16,11 @@ const addAddress = async (req, res) => {
   }
 };
 
-const deleteAddress = async (req, res) => {
-  const addressRes = await addressModel.deleteOne({ _id: req.params.id });
+const deleteAddress = async (req, res) => { 
+  const addressRes = await addressModel.deleteOne({
+    _id: req.params.id,
+    user: req._id,
+  });
 
   if (addressRes.n) {
     return res

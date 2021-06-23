@@ -1,4 +1,5 @@
 const express = require("express");
+const { requestNewToken } = require("../controllers/token.controller.js");
 const {
   signUpUser,
   loginUser,
@@ -11,5 +12,6 @@ const authRouter = express.Router();
 authRouter.post("/signup", signUpUser);
 authRouter.post("/login", loginUser);
 authRouter.get("/logout", validateRequest, logoutUser);
+authRouter.post("/token", requestNewToken);
 
 module.exports = authRouter;
